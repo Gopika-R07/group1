@@ -1,0 +1,24 @@
+
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: Maven@4
+    displayName: 'Build Maven Project'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'clean package'
+      publishJUnitResults: false
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      mavenVersionOption: 'Default'
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish JAR Artifact'
+    inputs:
+      targetPath: '$(System.DefaultWorkingDirectory)/target'
+      artifact: 'java-application'
+      publishLocation: 'pipeline'
